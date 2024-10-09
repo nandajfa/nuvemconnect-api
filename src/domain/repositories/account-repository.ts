@@ -6,4 +6,5 @@ export interface IAccountRepository {
   findByEmail(email: string): Promise<Account | null>
   findByEmailPassword(email: Email, password: string): Promise<string | null>
   updatePassword(email: string, password: string): Promise<void>
+  activateAccount(token: string): Promise<void>
 }

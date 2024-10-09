@@ -17,7 +17,8 @@ export class AccountRepositoryMongoose implements IAccountRepository {
       uuid: account.uuid,
       name: account.name,
       email: account.email.value,
-      password: hashedPassword
+      password: hashedPassword,
+      active: false
     })
     acc.save()
   }
@@ -36,6 +37,10 @@ export class AccountRepositoryMongoose implements IAccountRepository {
     return acc
   }
 
+  async activateAccount (email: string): Promise<void> {
+    await accountModel.updateOne({ email: email }, { $set: { active: true } })
+  }
+
   async findByEmailPassword (
     email: Email,
     password: string
@@ -43,6 +48,9 @@ export class AccountRepositoryMongoose implements IAccountRepository {
     const data = await accountModel.findOne({ email: email.value })
     if (!data) {
       return null
+    }
+    if (!data.active) {
+      throw new Error('Account not activated')
     }
 
     const isPasswordValid = await comparePassword(password, data.password)

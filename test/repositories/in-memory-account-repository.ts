@@ -63,4 +63,14 @@ export class InMemoryAccountRepository implements IAccountRepository {
 
     account.password = password
   }
+
+  async activateAccount (email: string): Promise<void> {
+    const account = this.accounts.find(account => account.email.value === email)
+
+    if (!account) {
+      throw new Error('Account not found')
+    }
+
+    account.active = true
+  }
 }

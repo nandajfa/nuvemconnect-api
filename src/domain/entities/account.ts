@@ -9,6 +9,7 @@ export interface AccountProps {
   email: Email
   password: string
   token?: string
+  active?: boolean
 }
 export class Account {
   private props: AccountProps
@@ -18,7 +19,8 @@ export class Account {
       name: props.name,
       email: props.email,
       password: props.password,
-      token: props.token
+      token: props.token,
+      active: props.active
     }
   }
 
@@ -79,5 +81,13 @@ export class Account {
 
   set token (token: string) {
     this.props.token = token
+  }
+
+  get active () {
+    return this.props.active ?? false
+  }
+
+  set active (active: boolean) {
+    this.props.active = active
   }
 }

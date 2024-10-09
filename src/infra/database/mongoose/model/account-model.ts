@@ -9,6 +9,7 @@ export const accountModel = model<Replace<AccountProps, { email: string }>>(
     name: String,
     email: String,
     password: String,
-    token: String
+    token: String,
+    active: Boolean
   })
 )

@@ -6,6 +6,7 @@ import { AccountRepositoryMongoose } from '../../database/mongoose/repositories/
 import { BadRequestError } from '../../../domain/utils/error-handle'
 import { LoginUseCase } from '../../../use-cases/user/login-use-case'
 import { resetPasswordUseCase } from '../../../use-cases/user/reset-password-use-case'
+import { ActivateAccountUseCase } from '../../../use-cases/user/activate-account-use-case'
 
 export async function accountRoute (fastify: FastifyInstance) {
   fastify.withTypeProvider<ZodTypeProvider>().post(
@@ -102,6 +103,28 @@ export async function accountRoute (fastify: FastifyInstance) {
       const accountRepository = new AccountRepositoryMongoose()
       const resetPassword = new resetPasswordUseCase(accountRepository)
       const result = await resetPassword.execute({ email, password })
+      return res.send({ message: result })
+    }
+  )
+
+  fastify.withTypeProvider<ZodTypeProvider>().get(
+    '/activate-account',
+    {
+      schema: {
+        querystring: z.object({
+          token: z.string()
+        })
+      }
+    },
+    async (req, res) => {
+      const { token } = req.query
+
+      const accountRepository = new AccountRepositoryMongoose()
+      const activateAccountUseCase = new ActivateAccountUseCase(
+        accountRepository
+      )
+
+      const result = await activateAccountUseCase.execute(token)
       return res.send({ message: result })
     }
   )

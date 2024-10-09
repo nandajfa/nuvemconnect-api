@@ -24,6 +24,9 @@ export class CreateAccountUseCase {
     const account = Account.create(name, email, password)
     await this.accountRepository.save(account)
 
+    // const activationToken = generateActivationToken(email)
+    // await sendActivationEmail(email, activationToken);
+
     return account
   }
 }

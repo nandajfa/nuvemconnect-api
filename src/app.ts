@@ -27,7 +27,7 @@ export class App {
     this.server.register(accountRoute)
   }
   plugins () {
-    this.server.register(cors, { 
+    this.server.register(cors, {
       origin: '*',
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       allowedHeaders: ['Content-Type', 'Authorization', 'accept', 'api_key']
@@ -49,5 +49,13 @@ export class App {
     this.server.register(swaggerUI, {
       routePrefix: '/docs'
     })
+  }
+
+  start () {
+    return this.server.listen({ port: 3000 })
+  }
+
+  close () {
+    return this.server.close()
   }
 }
